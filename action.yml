@@ -1,0 +1,25 @@
+# action.yml
+name: 'dwp/aws-terraform-tag-check'
+description: 'Checks given tags are applied to taggable resources'
+inputs:
+  github-token:
+    description: 'GitHub API token'
+    required: true
+  tags:
+    description: 'Names of tags to check resources for. A comma and space separated list within a string e.g. "tag1, tag2, tag3"'
+    required: true
+  tag-map:
+    description: 'Resource tag map name such as "common_tags" to check for'
+    required: false
+  paths-to-terraform-dirs:
+    description: 'Comma separated list of path(s) from root of project to terraform directories e.g. "terraform/deploy/, terraform/modules/" - defaults to "./"'
+    required: false
+    default: './'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.github-token}}
+    - ${{ inputs.tags }}
+    - ${{ inputs.paths-to-terraform-dirs }}
+    - ${{ inputs.tag-map }}

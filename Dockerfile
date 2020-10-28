@@ -1,3 +1,6 @@
-FROM alpine:latest
+FROM dwpdigital/tflint:latest
 
-CMD ["whoami"]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
