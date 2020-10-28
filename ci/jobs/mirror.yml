@@ -1,44 +1,44 @@
 resources:
-  - name: dwpdigital-dataworks-repo-template-docker
+  - name: dwpdigital-aws-terraform-tag-check
     type: registry-image-resource
     source:
-      repository: dwpdigital/dataworks-repo-template-docker
+      repository: dwpdigital/aws-terraform-tag-check
     check_every: 5m
 
-  - name: ecr-dwpdigital-dataworks-repo-template-docker-dev
+  - name: ecr-dwpdigital-aws-terraform-tag-check-dev
     .: (( inject meta.resources.ecr-resource ))
     source:
-      repository: "dataworks-repo-template-docker"
+      repository: "aws-terraform-tag-check"
 
-  - name: ecr-dwpdigital-dataworks-repo-template-docker
+  - name: ecr-dwpdigital-aws-terraform-tag-check
     .: (( inject meta.resources.ecr-resource ))
     source:
-      repository: "dataworks-repo-template-docker"
+      repository: "aws-terraform-tag-check"
       aws_role_arn: arn:aws:iam::((dataworks.aws_management_acc)):role/ci
 
 jobs:
-  - name: mirror-dwpdigital-dataworks-repo-template-docker-dev
-    serial_groups: [dataworks-repo-template-docker]
+  - name: mirror-dwpdigital-aws-terraform-tag-check-dev
+    serial_groups: [aws-terraform-tag-check]
     plan:
-      - get: dwpdigital-dataworks-repo-template-docker
+      - get: dwpdigital-aws-terraform-tag-check
         trigger: true
         params:
           format: oci
         attempts: 3
-      - put: ecr-dwpdigital-dataworks-repo-template-docker-dev
+      - put: ecr-dwpdigital-aws-terraform-tag-check-dev
         params:
-          image: "dwpdigital-dataworks-repo-template-docker/image.tar"
+          image: "dwpdigital-aws-terraform-tag-check/image.tar"
         attempts: 3
 
-  - name: mirror-dwpdigital-dataworks-repo-template-docker
-    serial_groups: [dataworks-repo-template-docker]
+  - name: mirror-dwpdigital-aws-terraform-tag-check
+    serial_groups: [aws-terraform-tag-check]
     plan:
-      - get: dwpdigital-dataworks-repo-template-docker
+      - get: dwpdigital-aws-terraform-tag-check
         trigger: true
         params:
           format: oci
         attempts: 3
-      - put: ecr-dwpdigital-dataworks-repo-template-docker
+      - put: ecr-dwpdigital-aws-terraform-tag-check
         params:
-          image: "dwpdigital-dataworks-repo-template-docker/image.tar"
+          image: "dwpdigital-aws-terraform-tag-check/image.tar"
         attempts: 3
